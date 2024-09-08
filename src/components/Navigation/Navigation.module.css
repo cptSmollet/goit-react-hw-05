@@ -1,0 +1,13 @@
+.nav {
+  padding: 10px;
+}
+
+.link {
+  margin-right: 10px;
+  text-decoration: none;
+  color: black;
+}
+
+.link.active {
+  color: red;
+}
