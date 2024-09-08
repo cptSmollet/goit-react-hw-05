@@ -1,8 +1,26 @@
+.movieCast {
+  padding: 20px;
+}
+
 .castList {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
   list-style: none;
   padding: 0;
 }
 
 .castItem {
-  margin-bottom: 5px;
+  text-align: center;
+}
+
+.actorPhoto {
+  width: 100px;
+  height: 150px;
+  object-fit: cover;
+  border-radius: 8px;
+}
+
+.actorName {
+  margin-top: 5px;
 }

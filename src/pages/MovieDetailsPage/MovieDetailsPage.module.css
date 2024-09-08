@@ -1,3 +1,51 @@
-.container {
+/* src/pages/MovieDetailsPage/MovieDetailsPage.module.css */
+.movieDetailsPage {
   padding: 20px;
+}
+
+.movieDetails {
+  display: flex;
+  gap: 20px;
+}
+
+.moviePoster {
+  width: 300px;
+  height: auto;
+  border-radius: 8px;
+}
+
+.movieInfo {
+  flex: 1;
+}
+
+.movieTitle {
+  font-size: 2rem;
+  margin-bottom: 10px;
+}
+
+.movieOverview {
+  margin-bottom: 20px;
+}
+
+.castList {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  list-style: none;
+  padding: 0;
+}
+
+.castItem {
+  text-align: center;
+}
+
+.actorPhoto {
+  width: 100px;
+  height: 150px;
+  object-fit: cover;
+  border-radius: 8px;
+}
+
+.actorName {
+  margin-top: 5px;
 }
