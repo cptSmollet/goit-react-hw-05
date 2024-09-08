@@ -1,22 +1,36 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { searchMovies } from '../../services/movies-api';
-import SearchBar from '../../components/SearchBar/SearchBar';
+import Loader from '../../components/Loader/Loader';
 import MovieList from '../../components/MovieList/MovieList';
-import styles from './MoviesPage.module.css';
+import SearchBar from '../../components/SearchBar/SearchBar';
+import css from './MoviesPage.module.css'; // Убедитесь, что этот путь и файл существуют
 
 const MoviesPage = () => {
   const [movies, setMovies] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
 
-  const handleSearch = (query) => {
-    searchMovies(query).then(setMovies);
+  const handleSearch = async (query) => {
+    setLoading(true);
+    try {
+      const results = await searchMovies(query);
+      setMovies(results);
+    } catch (error) {
+      setError('Failed to fetch movies.');
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
-    <div className={styles.container}>
+    <div className={css.moviesPage}>
       <SearchBar onSearch={handleSearch} />
-      <MovieList movies={movies} />
+      {loading && <Loader />}
+      {error && <p>{error}</p>}
+      {!loading && !error && <MovieList movies={movies} />}
     </div>
   );
 };
 
 export default MoviesPage;
+
