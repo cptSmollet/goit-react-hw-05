@@ -1,68 +1,83 @@
-
-import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import { useParams, useLocation, Link } from 'react-router-dom';
 import { fetchMovieDetails, fetchMovieCredits } from '../../services/movies-api';
 import Loader from '../../components/Loader/Loader';
 import css from './MovieDetailsPage.module.css';
 
 const MovieDetailsPage = () => {
   const { movieId } = useParams();
+  const location = useLocation();
   const [movie, setMovie] = useState(null);
-  const [credits, setCredits] = useState([]);
+  const [credits, setCredits] = useState(null);
   const [loading, setLoading] = useState(true);
+  const backLinkHref = location.state?.from || '/movies';
 
   useEffect(() => {
-    const getMovieDetails = async () => {
+    const fetchData = async () => {
       try {
-        const movieDetails = await fetchMovieDetails(movieId);
-        const movieCredits = await fetchMovieCredits(movieId);
-        setMovie(movieDetails);
-        setCredits(movieCredits);
+        const movieData = await fetchMovieDetails(movieId);
+        const creditsData = await fetchMovieCredits(movieId);
+        setMovie(movieData);
+        setCredits(creditsData);
       } catch (error) {
-        console.error('Failed to fetch movie details or credits', error);
+        console.error('Error fetching movie details:', error);
       } finally {
         setLoading(false);
       }
     };
 
-    getMovieDetails();
+    fetchData();
   }, [movieId]);
 
+  if (loading) {
+    return <Loader />;
+  }
+
+  if (!movie) {
+    return <p>Movie not found</p>;
+  }
+
+  const { title, overview, genres, poster_path, vote_average } = movie;
+
   return (
-    <div className={css.movieDetailsPage}>
-      {loading ? (
-        <Loader />
-      ) : (
-        movie && (
-          <div className={css.movieDetails}>
-            <img
-              src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
-              alt={movie.title}
-              className={css.moviePoster}
-            />
-            <div className={css.movieInfo}>
-              <h1 className={css.movieTitle}>{movie.title}</h1>
-              <p className={css.movieOverview}>{movie.overview}</p>
-              <h2>Cast</h2>
-              <ul className={css.castList}>
-                {credits.map(actor => (
-                  <li key={actor.cast_id} className={css.castItem}>
-                    <img
-                      src={`https://image.tmdb.org/t/p/w500${actor.profile_path}`}
-                      alt={actor.name}
-                      className={css.actorPhoto}
-                    />
-                    <p className={css.actorName}>{actor.name}</p>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          </div>
-        )
-      )}
+    <div className={css.container}>
+      <Link to={backLinkHref}>Go back</Link>
+      <div className={css.header}>
+        {poster_path && (
+          <img
+            src={`https://image.tmdb.org/t/p/w500${poster_path}`}
+            alt={title}
+            className={css.poster}
+          />
+        )}
+        <div className={css.details}>
+          <h1 className={css.title}>{title}</h1>
+          <p className={css.description}>{overview}</p>
+          <p className={css.genres}>
+            Genres: {genres.map(genre => genre.name).join(', ')}
+          </p>
+          <p className={css.userScore}>User Score: {vote_average}</p>
+        </div>
+      </div>
+      <h2>Cast</h2>
+      <ul className={css.actorsList}>
+        {credits && credits.map(actor => (
+          <li key={actor.cast_id} className={css.actorItem}>
+            {actor.profile_path && (
+              <img
+                src={`https://image.tmdb.org/t/p/w200${actor.profile_path}`}
+                alt={actor.name}
+                className={css.actorImage}
+              />
+            )}
+            <span>{actor.name}</span>
+          </li>
+        ))}
+      </ul>
     </div>
   );
 };
 
 export default MovieDetailsPage;
+
 

@@ -1,51 +1,59 @@
-/* src/pages/MovieDetailsPage/MovieDetailsPage.module.css */
-.movieDetailsPage {
+/* MovieDetailsPage.module.css */
+
+.container {
+  display: flex;
+  flex-direction: column;
   padding: 20px;
 }
 
-.movieDetails {
+.header {
   display: flex;
-  gap: 20px;
-}
-
-.moviePoster {
-  width: 300px;
-  height: auto;
-  border-radius: 8px;
-}
-
-.movieInfo {
-  flex: 1;
-}
-
-.movieTitle {
-  font-size: 2rem;
-  margin-bottom: 10px;
-}
-
-.movieOverview {
   margin-bottom: 20px;
 }
 
-.castList {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
+.poster {
+  flex-shrink: 0;
+  width: 200px;
+  height: 300px;
+  object-fit: cover;
+  margin-right: 20px;
+}
+
+.details {
+  flex: 1;
+}
+
+.title {
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.description {
+  margin-bottom: 10px;
+}
+
+.genres {
+  margin-bottom: 10px;
+  font-style: italic;
+}
+
+.userScore {
+  margin-bottom: 20px;
+}
+
+.actorsList {
   list-style: none;
   padding: 0;
 }
 
-.castItem {
-  text-align: center;
+.actorItem {
+  margin-bottom: 10px;
 }
 
-.actorPhoto {
+.actorImage {
   width: 100px;
   height: 150px;
   object-fit: cover;
-  border-radius: 8px;
-}
-
-.actorName {
-  margin-top: 5px;
+  margin-right: 10px;
 }
