@@ -1,5 +1,5 @@
-import { useEffect, useState } from 'react';
-import { useParams, useLocation, Link } from 'react-router-dom';
+import { useEffect, useState, useRef } from 'react';
+import { useParams, useLocation, Link, NavLink, Outlet } from 'react-router-dom';
 import { fetchMovieDetails, fetchMovieCredits } from '../../services/movies-api';
 import Loader from '../../components/Loader/Loader';
 import css from './MovieDetailsPage.module.css';
@@ -10,7 +10,7 @@ const MovieDetailsPage = () => {
   const [movie, setMovie] = useState(null);
   const [credits, setCredits] = useState(null);
   const [loading, setLoading] = useState(true);
-  const backLinkHref = location.state?.from || '/movies';
+  const backLinkRef = useRef(location.state?.from || '/movies');
 
   useEffect(() => {
     const fetchData = async () => {
@@ -41,7 +41,7 @@ const MovieDetailsPage = () => {
 
   return (
     <div className={css.container}>
-      <Link to={backLinkHref}>Go back</Link>
+      <Link to={backLinkRef.current}>Go back</Link>
       <div className={css.header}>
         {poster_path && (
           <img
@@ -59,25 +59,21 @@ const MovieDetailsPage = () => {
           <p className={css.userScore}>User Score: {vote_average}</p>
         </div>
       </div>
-      <h2>Cast</h2>
-      <ul className={css.actorsList}>
-        {credits && credits.map(actor => (
-          <li key={actor.cast_id} className={css.actorItem}>
-            {actor.profile_path && (
-              <img
-                src={`https://image.tmdb.org/t/p/w200${actor.profile_path}`}
-                alt={actor.name}
-                className={css.actorImage}
-              />
-            )}
-            <span>{actor.name}</span>
-          </li>
-        ))}
-      </ul>
+      <nav className={css.navLinks}>
+        <NavLink to="cast" className={css.navLink} style={({ isActive }) => ({ fontWeight: isActive ? 'bold' : 'normal' })}>
+          Cast
+        </NavLink>
+        <NavLink to="reviews" className={css.navLink} style={({ isActive }) => ({ fontWeight: isActive ? 'bold' : 'normal' })}>
+          Reviews
+        </NavLink>
+      </nav>
+      <Outlet />
     </div>
   );
 };
 
 export default MovieDetailsPage;
+
+
 
 

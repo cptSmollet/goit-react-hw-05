@@ -1,8 +1,32 @@
-
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
+import { fetchMovieCredits } from '../../services/movies-api';
 import css from './MovieCast.module.css';
 
-const MovieCast = ({ cast }) => {
+const MovieCast = () => {
+  const { movieId } = useParams();
+  const [cast, setCast] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchCast = async () => {
+      try {
+        const castData = await fetchMovieCredits(movieId);
+        setCast(castData);
+      } catch (error) {
+        console.error('Error fetching cast:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchCast();
+  }, [movieId]);
+
+  if (loading) {
+    return <p>Loading...</p>;
+  }
+
   return (
     <div className={css.movieCast}>
       <h2>Cast</h2>
@@ -23,4 +47,6 @@ const MovieCast = ({ cast }) => {
 };
 
 export default MovieCast;
+
+
 

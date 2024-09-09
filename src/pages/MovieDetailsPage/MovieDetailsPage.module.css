@@ -1,5 +1,3 @@
-/* MovieDetailsPage.module.css */
-
 .container {
   display: flex;
   flex-direction: column;
@@ -42,6 +40,21 @@
   margin-bottom: 20px;
 }
 
+.navLinks {
+  display: flex;
+  margin-bottom: 20px;
+}
+
+.navLink {
+  margin-right: 10px;
+  text-decoration: none;
+}
+
+.active {
+  font-weight: bold;
+  text-decoration: underline;
+}
+
 .actorsList {
   list-style: none;
   padding: 0;
@@ -51,7 +64,7 @@
   margin-bottom: 10px;
 }
 
-.actorImage {
+.actorPhoto {
   width: 100px;
   height: 150px;
   object-fit: cover;
